@@ -14,5 +14,99 @@
     <link rel="stylesheet" href="css/normalize.css" />
     <link rel="stylesheet" href="css/styles.css" />
   </head>
-  <body></body>
+  <body>
+    <header class="header">
+      <h1 class="header__headings">Administrador de pacientes</h1>
+    </header>
+
+    <main class="main main__container">
+      <div class="main__grid">
+        <section class="main__patient">
+          <h3 class="main__headings">Datos del paciente</h3>
+          <form class="form" action="#">
+            <div class="form__name">
+              <label class="form__label" for="patient-name">Nombre</label>
+              <input
+                type="text"
+                id="patient-name"
+                class="form__input"
+                placeholder="Nombre del paciente"
+              />
+            </div>
+
+            <div class="form__age">
+              <label class="form__label" for="patient-age">Edad</label>
+              <input
+                type="number"
+                id="patient-age"
+                class="form__input"
+                placeholder="Edad del paciente"
+                min="1"
+                max="99"
+              />
+            </div>
+
+            <div class="form__phone">
+              <label class="form__label" for="patient-phone">Teléfono</label>
+              <input
+                type="tel"
+                id="patient-phone"
+                class="form__input"
+                placeholder="Teléfono del paciente"
+              />
+            </div>
+
+            <div class="form__date">
+              <label class="form__label" for="appointment-date">Fecha de la cita</label>
+              <input
+                type="date"
+                id="appointment-date"
+                class="form__input"
+                placeholder="Fecha de la cita"
+              />
+            </div>
+
+            <div class="form__time">
+              <label class="form__label" for="appointment-time">Hora de la cita</label>
+              <input
+                type="time"
+                id="appointment-time"
+                class="form__input"
+                placeholder="Hora de la cita"
+              />
+            </div>
+
+            <div class="form__symptoms">
+              <label class="form__label" for="patient-symptoms">Síntomas</label>
+
+              <textarea
+                type="text"
+                id="patient-symptoms"
+                class="form__textarea"
+                cols="40"
+                rows="8"
+                placeholder="Síntomas del paciente"
+              ></textarea>
+            </div>
+
+            <div class="form__diagnosis">
+              <label class="form__label" for="patient-diagnosis">Diagnóstico</label>
+
+              <textarea
+                type="text"
+                id="patient-diagnosis"
+                class="form__textarea"
+                cols="40"
+                rows="8"
+                placeholder="Diagnóstico del paciente (opcional)"
+              ></textarea>
+            </div>
+
+            <button type="submit" class="btn btn--add">Agregar cita</button>
+          </form>
+        </section>
+        <section class="main__appointments"></section>
+      </div>
+    </main>
+  </body>
 </html>
