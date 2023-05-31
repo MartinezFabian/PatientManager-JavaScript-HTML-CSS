@@ -1,0 +1,41 @@
+/* variables */
+
+:root {
+  --main-font: "Poppins", sans-serif;
+  --background-color: #e9f0f6;
+  --gray: rgb(146, 146, 146);
+  --white: #fff;
+  --black: #111;
+  --green: #489691;
+  --red: #c70000;
+}
+
+/* global styles */
+
+html {
+  box-sizing: border-box;
+  font-size: 62.5%; /* 1rem = 10px */
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: var(--main-font);
+  font-size: 1.6rem;
+  line-height: 1.8;
+  background-color: var(--background-color);
+}
+
+[class$="__container"] {
+  max-width: 120rem;
+  width: 90%; /* cuando el ancho sea menos de 1200px va a ocupar el 90% */
+  margin: 0 auto; /* centra el contenedor */
+}
+
+[class$="__headings"] {
+  margin: 2rem 0;
+}
