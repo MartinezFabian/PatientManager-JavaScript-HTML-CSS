@@ -45,6 +45,7 @@ body {
 .header {
   background-color: var(--white);
   padding: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 47px -14px;
 }
 
 .header__headings {
@@ -62,7 +63,7 @@ body {
 @media (min-width: 1024px) {
   .main__grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 600px 600px;
     gap: 4rem;
     justify-items: center;
   }
@@ -73,6 +74,7 @@ body {
   background-color: var(--white);
   padding: 2rem;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 18px 50px -10px;
+  max-width: 100%;
 }
 
 @media (min-width: 468px) {
@@ -117,6 +119,8 @@ body {
   padding: 1rem;
   border-radius: 0.5rem;
   font-weight: 600;
+  color: var(--white);
+  text-transform: uppercase;
 }
 
 .btn:hover {
@@ -125,5 +129,60 @@ body {
 
 .btn--add {
   background-color: var(--green);
-  color: var(--white);
+}
+
+/* appointments section */
+
+.main__appointments {
+  margin-top: 8rem;
+  max-width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .main__appointments {
+    margin-top: 0;
+  }
+}
+
+.appointments {
+  list-style-type: none;
+  padding: 0;
+}
+
+.appointment {
+  background-color: var(--white);
+  padding: 2rem 4rem;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 18px 50px -10px;
+}
+
+.appointment__patient-name {
+  text-align: center;
+}
+
+.appointment__label {
+  color: var(--gray);
+  font-weight: 600;
+  margin-bottom: 0;
+}
+
+.appointment__data {
+  width: 100%;
+  max-width: 100%;
+  margin-top: 0;
+  word-wrap: break-word;
+}
+
+.appointment__btn {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  margin-top: 4rem;
+}
+
+.btn--remove {
+  background-color: var(--red);
+}
+
+.btn--edit {
+  background-color: var(--green);
 }
