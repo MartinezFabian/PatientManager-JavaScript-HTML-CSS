@@ -39,3 +39,91 @@ body {
 [class$="__headings"] {
   margin: 2rem 0;
 }
+
+/* header */
+
+.header {
+  background-color: var(--white);
+  padding: 1rem;
+}
+
+.header__headings {
+  margin: 0;
+  padding: 1rem;
+  font-size: 1.9rem;
+}
+
+/* main  */
+
+.main {
+  margin-top: 8rem;
+}
+
+@media (min-width: 1024px) {
+  .main__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    justify-items: center;
+  }
+}
+
+/* section patient */
+.main__patient {
+  background-color: var(--white);
+  padding: 2rem;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 18px 50px -10px;
+}
+
+@media (min-width: 468px) {
+  .main__patient {
+    padding: 2rem 4rem;
+  }
+}
+
+.main__headings {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.form__field {
+  margin-bottom: 2rem;
+}
+
+.form__label {
+  display: block;
+  font-weight: 600;
+}
+
+.form__input,
+.form__textarea {
+  width: 100%;
+  border-radius: 0.8rem;
+  border-style: solid;
+  border-color: var(--gray);
+  padding: 0.8rem;
+}
+
+.form__textarea {
+  resize: none;
+}
+
+/* buttons */
+
+.btn {
+  width: 100%;
+  border: none;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+}
+
+.btn:hover {
+  cursor: pointer;
+}
+
+.btn--add {
+  background-color: var(--green);
+  color: var(--white);
+}
