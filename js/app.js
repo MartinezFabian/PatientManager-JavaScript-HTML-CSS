@@ -10,6 +10,10 @@ class AppointmentManager {
   get appointments() {
     return this.#appointments;
   }
+
+  addAppointment(appointment) {
+    this.#appointments.push(appointment);
+  }
 }
 
 class UserInterface {
@@ -80,6 +84,8 @@ function main() {
     patientDiagnosis: "",
   };
 
+  const appointmentManager = new AppointmentManager();
+
   //funciones
 
   registerEventListeners();
@@ -102,12 +108,12 @@ function main() {
 
   // validar y agregar una nueva cita
   function addAppointment(e) {
-    e.preventDefault();
+    e.preventDefault(); //prevenir el comportamiento predeterminado del evento submit
 
     const { patientName, patientAge, patientPhone, date, time, patientSymptoms, patientDiagnosis } =
       appointment;
 
-    // validar
+    // validar cita
 
     if (
       patientName === "" ||
@@ -119,9 +125,32 @@ function main() {
     ) {
       UserInterface.showAlert("Debes rellenar todos los campos obligatorios", "error");
       return;
-    } else if (isNaN(patientPhone) || patientPhone.length < 7) {
+    }
+
+    if (isNaN(patientPhone) || patientPhone.length < 7) {
       UserInterface.showAlert("El número de teléfono ingresado no es válido", "error");
       return;
     }
+
+    // generar un id único para la cita
+    appointment.id = Date.now();
+
+    // creamos una copia del objeto appointment y la agregamos al array appointments
+    appointmentManager.addAppointment({ ...appointment });
+
+    console.log(appointmentManager.appointments);
+
+    // mostrar alerta
+    UserInterface.showAlert("¡La cita fue creada con éxito!", "success");
+
+    // reiniciar form
+    form.reset();
+
+    // reiniciar objeto appointment
+    for (key in appointment) {
+      appointment[key] = "";
+    }
+
+    console.log(appointment);
   }
 }
