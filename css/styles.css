@@ -136,7 +136,7 @@ body {
 
 .main__appointments {
   margin-top: 8rem;
-  max-width: 100%;
+  width: 100%;
 }
 
 @media (min-width: 1024px) {
@@ -152,6 +152,7 @@ body {
 }
 
 .appointment {
+  margin-bottom: 3rem;
   background-color: var(--white);
   padding: 2rem 4rem;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 18px 50px -10px;

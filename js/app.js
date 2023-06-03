@@ -54,6 +54,65 @@ class UserInterface {
       alert.remove();
     }, 2000);
   }
+
+  static ShowAppointmentsInHTML(appointments) {
+    const appointmentList = document.querySelector("#appointments");
+
+    // limpiamos las citas actuales en el HTML para evitar duplicados
+    UserInterface.clearHTML(appointmentList);
+
+    // agregar citas al HTML
+
+    appointments.forEach((appointment) => {
+      const {
+        id,
+        patientName,
+        patientAge,
+        patientPhone,
+        date,
+        time,
+        patientSymptoms,
+        patientDiagnosis,
+      } = appointment;
+
+      appointmentList.insertAdjacentHTML(
+        "afterbegin",
+        `
+          <li data-id="${id}" class="appointment">
+            <h3 class="appointment__patient-name">${patientName}</h3>
+
+            <p class="appointment__label">Edad</p>
+            <p class="appointment__data">${patientAge}</p>
+
+            <p class="appointment__label">Teléfono</p>
+            <p class="appointment__data"> +${patientPhone}</p>
+
+            <p class="appointment__label">Fecha de la cita</p>
+            <p class="appointment__data">${date} a las ${time}</p>
+
+            <p class="appointment__label">Síntomas</p>
+            <p class="appointment__data"> ${patientSymptoms} </p>
+
+            <p class="appointment__label">Diagnóstico</p>
+            <p class="appointment__data"> ${patientDiagnosis} </p>
+
+            <div class="appointment__btn">
+              <button id="edit-button" class="btn btn--edit">Editar</button>
+              <button id="remove-button" class="btn btn--remove">Eliminar</button>
+            </div>
+        </li>
+      `
+      );
+    });
+  }
+
+  static clearHTML(appointmentList) {
+    // mientras el elemento appointmentList tenga un primer hijo
+    while (appointmentList.firstChild) {
+      //eliminar el primer hijo del elemento appointmentList
+      appointmentList.removeChild(appointmentList.firstChild);
+    }
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -132,13 +191,20 @@ function main() {
       return;
     }
 
+    // agregar texto por defecto si no se completo el campo opcional de diagnostico
+
+    if (patientDiagnosis === "") {
+      appointment.patientDiagnosis = "Diagnóstico pendiente";
+    }
+
     // generar un id único para la cita
     appointment.id = Date.now();
 
     // creamos una copia del objeto appointment y la agregamos al array appointments
     appointmentManager.addAppointment({ ...appointment });
 
-    console.log(appointmentManager.appointments);
+    //mostrar citas en HTML
+    UserInterface.ShowAppointmentsInHTML(appointmentManager.appointments);
 
     // mostrar alerta
     UserInterface.showAlert("¡La cita fue creada con éxito!", "success");
@@ -150,7 +216,5 @@ function main() {
     for (key in appointment) {
       appointment[key] = "";
     }
-
-    console.log(appointment);
   }
 }
