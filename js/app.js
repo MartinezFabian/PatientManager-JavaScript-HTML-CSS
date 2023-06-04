@@ -14,6 +14,11 @@ class AppointmentManager {
   addAppointment(appointment) {
     this.#appointments.push(appointment);
   }
+
+  removeAppointment(id) {
+    this.#appointments = this.#appointments.filter((appointment) => appointment.id !== id);
+    console.log(this.#appointments);
+  }
 }
 
 class UserInterface {
@@ -158,6 +163,16 @@ function main() {
     inputPatientSymptoms.addEventListener("input", readInputs);
     inputPatientDiagnosis.addEventListener("input", readInputs);
     form.addEventListener("submit", addAppointment);
+
+    appointmentList.addEventListener("click", (e) => {
+      if (e.target.id === "remove-button") {
+        //obtener el <li></li> de la cita
+        const appointment = e.target.parentElement.parentElement;
+
+        //llamamos a removeAppointment con el id del elemento a eliminar
+        removeAppointment(Number(appointment.dataset.id));
+      }
+    });
   }
 
   // leer valores ingresados en los inputs y guardarlos en el objeto appointment
@@ -216,5 +231,16 @@ function main() {
     for (key in appointment) {
       appointment[key] = "";
     }
+  }
+
+  function removeAppointment(id) {
+    //eliminar cita del array
+    appointmentManager.removeAppointment(id);
+
+    //mostrar alerta
+    UserInterface.showAlert("La cita se eliminó correctamente", "success");
+
+    //actualizar citas en HTML
+    UserInterface.ShowAppointmentsInHTML(appointmentManager.appointments);
   }
 }
