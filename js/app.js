@@ -17,7 +17,16 @@ class AppointmentManager {
 
   removeAppointment(id) {
     this.#appointments = this.#appointments.filter((appointment) => appointment.id !== id);
-    console.log(this.#appointments);
+  }
+
+  editAppointment(newAppointment) {
+    this.#appointments = this.#appointments.map((appointment) => {
+      if (appointment.id === newAppointment.id) {
+        return newAppointment;
+      } else {
+        return appointment;
+      }
+    });
   }
 }
 
@@ -127,14 +136,16 @@ document.addEventListener("DOMContentLoaded", () => {
 function main() {
   // variables/constantes
   const form = document.querySelector(".form");
-  const inputPatientName = document.querySelector("#patient-name");
   const inputPatientAge = document.querySelector("#patient-age");
+  const inputPatientName = document.querySelector("#patient-name");
   const inputPatientPhone = document.querySelector("#patient-phone");
   const inputAppointmentDate = document.querySelector("#appointment-date");
   const inputAppointmentTime = document.querySelector("#appointment-time");
   const inputPatientSymptoms = document.querySelector("#patient-symptoms");
   const inputPatientDiagnosis = document.querySelector("#patient-diagnosis");
   const appointmentList = document.querySelector("#appointments");
+
+  let editMode = false;
 
   //objetos
 
@@ -171,6 +182,12 @@ function main() {
 
         //llamamos a removeAppointment con el id del elemento a eliminar
         removeAppointment(Number(appointment.dataset.id));
+      } else if (e.target.id === "edit-button") {
+        //obtener el <li></li> de la cita
+        const appointment = e.target.parentElement.parentElement;
+
+        //llamamos a editAppointment con el id del elemento a editar
+        editAppointment(Number(appointment.dataset.id));
       }
     });
   }
@@ -212,17 +229,34 @@ function main() {
       appointment.patientDiagnosis = "Diagnóstico pendiente";
     }
 
-    // generar un id único para la cita
-    appointment.id = Date.now();
+    if (editMode) {
+      // editar cita
 
-    // creamos una copia del objeto appointment y la agregamos al array appointments
-    appointmentManager.addAppointment({ ...appointment });
+      // creamos una copia del objeto appointment y llamar a editAppointment para editar
+      appointmentManager.editAppointment({ ...appointment });
+
+      // mostrar alerta
+      UserInterface.showAlert("¡La cita fue editada con éxito!", "success");
+
+      // modificar texto del button
+      document.querySelector("#add-button").textContent = "Agregar cita";
+
+      editMode = false;
+    } else {
+      // crear una nueva cita
+
+      // generar un id único para la cita
+      appointment.id = Date.now();
+
+      // creamos una copia del objeto appointment y la agregamos al array appointments
+      appointmentManager.addAppointment({ ...appointment });
+
+      // mostrar alerta
+      UserInterface.showAlert("¡La cita fue creada con éxito!", "success");
+    }
 
     //mostrar citas en HTML
     UserInterface.ShowAppointmentsInHTML(appointmentManager.appointments);
-
-    // mostrar alerta
-    UserInterface.showAlert("¡La cita fue creada con éxito!", "success");
 
     // reiniciar form
     form.reset();
@@ -242,5 +276,36 @@ function main() {
 
     //actualizar citas en HTML
     UserInterface.ShowAppointmentsInHTML(appointmentManager.appointments);
+  }
+
+  function editAppointment(id) {
+    // obtener cita a editar buscando por id
+    const appointmentToEdit = appointmentManager.appointments.find(
+      (appointment) => appointment.id === id
+    );
+
+    // rellenar los inputs con los valores actuales de la cita
+    inputPatientName.value = appointmentToEdit.patientName;
+    inputPatientAge.value = appointmentToEdit.patientAge;
+    inputPatientPhone.value = appointmentToEdit.patientPhone;
+    inputAppointmentDate.value = appointmentToEdit.date;
+    inputAppointmentTime.value = appointmentToEdit.time;
+    inputPatientSymptoms.value = appointmentToEdit.patientSymptoms;
+    inputPatientDiagnosis.value = appointmentToEdit.patientDiagnosis;
+
+    // rellenar el obj appointment con los valores de appointmentToEdit
+    appointment.id = appointmentToEdit.id;
+    appointment.patientName = appointmentToEdit.patientName;
+    appointment.patientAge = appointmentToEdit.patientAge;
+    appointment.patientPhone = appointmentToEdit.patientPhone;
+    appointment.date = appointmentToEdit.date;
+    appointment.time = appointmentToEdit.time;
+    appointment.patientSymptoms = appointmentToEdit.patientSymptoms;
+    appointment.patientDiagnosis = appointmentToEdit.patientDiagnosis;
+
+    // modificar texto del button
+    document.querySelector("#add-button").textContent = "Guardar Cambios";
+
+    editMode = true;
   }
 }
