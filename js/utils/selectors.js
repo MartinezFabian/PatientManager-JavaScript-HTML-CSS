@@ -1,0 +1,9 @@
+export const form = document.querySelector(".form");
+export const inputPatientAge = document.querySelector("#patient-age");
+export const inputPatientName = document.querySelector("#patient-name");
+export const inputPatientPhone = document.querySelector("#patient-phone");
+export const inputAppointmentDate = document.querySelector("#appointment-date");
+export const inputAppointmentTime = document.querySelector("#appointment-time");
+export const inputPatientSymptoms = document.querySelector("#patient-symptoms");
+export const inputPatientDiagnosis = document.querySelector("#patient-diagnosis");
+export const appointmentList = document.querySelector("#appointments");
