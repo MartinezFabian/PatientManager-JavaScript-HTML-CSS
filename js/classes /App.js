@@ -15,6 +15,7 @@ import {
   addAppointment,
   removeAppointment,
   editAppointment,
+  createDB,
 } from "../utils/appointmentFunctions.js";
 
 class App {
@@ -23,6 +24,8 @@ class App {
   }
 
   initApp() {
+    createDB(); // crear base de datos indexDB
+
     inputPatientName.addEventListener("input", readInputs);
     inputPatientAge.addEventListener("input", readInputs);
     inputPatientPhone.addEventListener("input", readInputs);

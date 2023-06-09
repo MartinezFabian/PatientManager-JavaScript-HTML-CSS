@@ -142,4 +142,43 @@ function editAppointment(id) {
   editMode = true;
 }
 
-export { readInputs, addAppointment, removeAppointment, editAppointment };
+//crear la base de datos indexDB
+function createDB() {
+  const dbName = "appointments";
+  const dbVersion = 1;
+
+  // crear la base de datos
+  const openRequest = indexedDB.open(dbName, dbVersion);
+
+  openRequest.onerror = function (e) {
+    console.log("Error al abrir la base de datos ", e.target.errorCode);
+  };
+
+  openRequest.onsuccess = function (e) {
+    const db = e.target.result;
+    console.log("Base de datos abierta con éxito ", db);
+  };
+
+  // definir estructura de la base de datos
+  openRequest.onupgradeneeded = function (e) {
+    const db = e.target.result;
+
+    // definir "appointments" que es el equivalente a una tabla en bd relacionales
+    const appointmentStore = db.createObjectStore("appointments", {
+      keyPath: "id",
+      autoIncrement: true,
+    });
+
+    // crear el equivalente a columnas de una tabla en bd relacionales
+    appointmentStore.createIndex("id", "id", { unique: true });
+    appointmentStore.createIndex("patientName", "patientName", { unique: false });
+    appointmentStore.createIndex("patientAge", "patientAge", { unique: false });
+    appointmentStore.createIndex("patientPhone", "patientPhone", { unique: false });
+    appointmentStore.createIndex("date", "date", { unique: false });
+    appointmentStore.createIndex("time", "time", { unique: false });
+    appointmentStore.createIndex("patientSymptoms", "patientSymptoms", { unique: false });
+    appointmentStore.createIndex("patientDiagnosis", "patientDiagnosis", { unique: false });
+  };
+}
+
+export { readInputs, addAppointment, removeAppointment, editAppointment, createDB };
