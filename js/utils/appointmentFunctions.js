@@ -15,6 +15,8 @@ const appointmentManager = new AppointmentManager();
 
 let editMode = false;
 
+let DB;
+
 const appointment = {
   patientName: "",
   patientAge: "",
@@ -84,8 +86,31 @@ function addAppointment(e) {
     // creamos una copia del objeto appointment y la agregamos al array appointments
     appointmentManager.addAppointment({ ...appointment });
 
-    // mostrar alerta
-    UserInterface.showAlert("¡La cita fue creada con éxito!", "success");
+    // insertar appointment a indexDB
+
+    // abrir transaction de lectura y escritura en el objectStore "appointments"
+    const transaction = DB.transaction("appointments", "readwrite");
+
+    // obtener una referencia al objectStore "appointments"
+    const appointmentStore = transaction.objectStore("appointments");
+
+    // agregar el objeto appointment al appointmentStore en indexDB
+    const addAppointmentRequest = appointmentStore.add(appointment);
+
+    // manejar error
+
+    addAppointmentRequest.onerror = function (e) {
+      console.log("Error al agregar la cita", e.target.error);
+    };
+
+    // manejar éxito
+
+    addAppointmentRequest.onsuccess = function (e) {
+      console.log("Cita agregada con éxito", e.target.result);
+
+      // mostrar alerta
+      UserInterface.showAlert("¡La cita fue creada con éxito!", "success");
+    };
   }
 
   //mostrar citas en HTML
@@ -155,8 +180,8 @@ function createDB() {
   };
 
   openRequest.onsuccess = function (e) {
-    const db = e.target.result;
-    console.log("Base de datos abierta con éxito ", db);
+    DB = e.target.result;
+    console.log("Base de datos abierta con éxito ", DB);
   };
 
   // definir estructura de la base de datos
