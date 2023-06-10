@@ -114,7 +114,7 @@ function addAppointment(e) {
   }
 
   //mostrar citas en HTML
-  UserInterface.ShowAppointmentsInHTML(appointmentManager.appointments);
+  UserInterface.ShowAppointmentsInHTML();
 
   // reiniciar form
   form.reset();
@@ -133,7 +133,7 @@ function removeAppointment(id) {
   UserInterface.showAlert("La cita se eliminó correctamente", "success");
 
   //actualizar citas en HTML
-  UserInterface.ShowAppointmentsInHTML(appointmentManager.appointments);
+  UserInterface.ShowAppointmentsInHTML();
 }
 
 function editAppointment(id) {
@@ -206,4 +206,4 @@ function createDB() {
   };
 }
 
-export { readInputs, addAppointment, removeAppointment, editAppointment, createDB };
+export { readInputs, addAppointment, removeAppointment, editAppointment, createDB, DB };

@@ -18,6 +18,8 @@ import {
   createDB,
 } from "../utils/appointmentFunctions.js";
 
+import { UserInterface } from "./UserInterface.js";
+
 class App {
   constructor() {
     this.initApp();
@@ -25,6 +27,12 @@ class App {
 
   initApp() {
     createDB(); // crear base de datos indexDB
+
+    // verificar si la base de datos "appointments" con la versión 1 está abierta en el navegador
+    if (window.indexedDB.open("appointments", 1)) {
+      // cargar citas en el HTML
+      UserInterface.ShowAppointmentsInHTML();
+    }
 
     inputPatientName.addEventListener("input", readInputs);
     inputPatientAge.addEventListener("input", readInputs);
