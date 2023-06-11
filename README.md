@@ -26,4 +26,4 @@ The project is built using the following technologies:
 
 ## Online Demo
 
-You can access the online demo of this project through the following link: [Medical Appointment Management App]()
+You can access the online demo of this project through the following link: [Medical Appointment Management App](https://martinezfabian.github.io/PatientManager-JavaScript-HTML-CSS/)
