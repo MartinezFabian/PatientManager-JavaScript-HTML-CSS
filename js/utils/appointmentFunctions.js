@@ -1,5 +1,5 @@
 import { UserInterface } from "../classes /UserInterface.js";
-import { AppointmentManager } from "../classes /AppointmentManager.js";
+
 import {
   form,
   inputPatientName,
@@ -10,8 +10,6 @@ import {
   inputPatientSymptoms,
   inputPatientDiagnosis,
 } from "./selectors.js";
-
-const appointmentManager = new AppointmentManager();
 
 let editMode = false;
 
@@ -67,9 +65,6 @@ function addAppointment(e) {
   if (editMode) {
     // editar cita
 
-    // creamos una copia del objeto appointment y llamar a editAppointment para editar
-    appointmentManager.editAppointment({ ...appointment });
-
     // editar en indexedDB
 
     // iniciamos una transacción en la base de datos con el objeto DB y especificamos que será de escritura y lectura.
@@ -99,9 +94,6 @@ function addAppointment(e) {
 
     // generar un id único para la cita
     appointment.id = Date.now();
-
-    // creamos una copia del objeto appointment y la agregamos al array appointments
-    appointmentManager.addAppointment({ ...appointment });
 
     // insertar appointment a indexDB
 
@@ -144,7 +136,6 @@ function addAppointment(e) {
 
 function removeAppointment(id) {
   //eliminar cita del array
-  //appointmentManager.removeAppointment(id);
 
   // Abrir una transacción de lectura/escritura en la base de datos "appointments"
   const transaction = DB.transaction("appointments", "readwrite");
