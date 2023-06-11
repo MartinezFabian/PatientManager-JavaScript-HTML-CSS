@@ -70,13 +70,25 @@ function addAppointment(e) {
     // creamos una copia del objeto appointment y llamar a editAppointment para editar
     appointmentManager.editAppointment({ ...appointment });
 
-    // mostrar alerta
-    UserInterface.showAlert("¡La cita fue editada con éxito!", "success");
+    // editar en indexedDB
+    const transaction = DB.transaction("appointments", "readwrite");
+    const appointmentStore = transaction.objectStore("appointments");
 
-    // modificar texto del button
-    document.querySelector("#add-button").textContent = "Agregar cita";
+    appointmentStore.put(appointment);
 
-    editMode = false;
+    transaction.oncomplete = function () {
+      // mostrar alerta
+      UserInterface.showAlert("¡La cita fue editada con éxito!", "success");
+
+      // modificar texto del button
+      document.querySelector("#add-button").textContent = "Agregar cita";
+
+      editMode = false;
+    };
+
+    transaction.onerror = function () {
+      console.log("Error al editar cita");
+    };
   } else {
     // crear una nueva cita
 
@@ -137,34 +149,42 @@ function removeAppointment(id) {
 }
 
 function editAppointment(id) {
-  // obtener cita a editar buscando por id
-  const appointmentToEdit = appointmentManager.appointments.find(
-    (appointment) => appointment.id === id
-  );
+  // Abrir una transacción de lectura/escritura en la base de datos "appointments"
+  const transaction = DB.transaction("appointments", "readwrite");
+  const appointmentStore = transaction.objectStore("appointments");
 
-  // rellenar los inputs con los valores actuales de la cita
-  inputPatientName.value = appointmentToEdit.patientName;
-  inputPatientAge.value = appointmentToEdit.patientAge;
-  inputPatientPhone.value = appointmentToEdit.patientPhone;
-  inputAppointmentDate.value = appointmentToEdit.date;
-  inputAppointmentTime.value = appointmentToEdit.time;
-  inputPatientSymptoms.value = appointmentToEdit.patientSymptoms;
-  inputPatientDiagnosis.value = appointmentToEdit.patientDiagnosis;
+  // Obtener la cita a editar utilizando el ID como clave
+  const request = appointmentStore.get(id);
 
-  // rellenar el obj appointment con los valores de appointmentToEdit
-  appointment.id = appointmentToEdit.id;
-  appointment.patientName = appointmentToEdit.patientName;
-  appointment.patientAge = appointmentToEdit.patientAge;
-  appointment.patientPhone = appointmentToEdit.patientPhone;
-  appointment.date = appointmentToEdit.date;
-  appointment.time = appointmentToEdit.time;
-  appointment.patientSymptoms = appointmentToEdit.patientSymptoms;
-  appointment.patientDiagnosis = appointmentToEdit.patientDiagnosis;
+  request.onsuccess = function (e) {
+    const appointmentToEdit = e.target.result;
 
-  // modificar texto del button
-  document.querySelector("#add-button").textContent = "Guardar Cambios";
+    if (appointmentToEdit) {
+      // rellenar los inputs con los valores actuales de la cita
+      inputPatientName.value = appointmentToEdit.patientName;
+      inputPatientAge.value = appointmentToEdit.patientAge;
+      inputPatientPhone.value = appointmentToEdit.patientPhone;
+      inputAppointmentDate.value = appointmentToEdit.date;
+      inputAppointmentTime.value = appointmentToEdit.time;
+      inputPatientSymptoms.value = appointmentToEdit.patientSymptoms;
+      inputPatientDiagnosis.value = appointmentToEdit.patientDiagnosis;
 
-  editMode = true;
+      // rellenar el obj appointment con los valores de appointmentToEdit
+      appointment.id = appointmentToEdit.id;
+      appointment.patientName = appointmentToEdit.patientName;
+      appointment.patientAge = appointmentToEdit.patientAge;
+      appointment.patientPhone = appointmentToEdit.patientPhone;
+      appointment.date = appointmentToEdit.date;
+      appointment.time = appointmentToEdit.time;
+      appointment.patientSymptoms = appointmentToEdit.patientSymptoms;
+      appointment.patientDiagnosis = appointmentToEdit.patientDiagnosis;
+
+      // modificar texto del button
+      document.querySelector("#add-button").textContent = "Guardar Cambios";
+
+      editMode = true;
+    }
+  };
 }
 
 //crear la base de datos indexDB
