@@ -71,9 +71,14 @@ function addAppointment(e) {
     appointmentManager.editAppointment({ ...appointment });
 
     // editar en indexedDB
+
+    // iniciamos una transacción en la base de datos con el objeto DB y especificamos que será de escritura y lectura.
     const transaction = DB.transaction("appointments", "readwrite");
+
+    // Obtenemos el objectStore "appointments" de la transacción.
     const appointmentStore = transaction.objectStore("appointments");
 
+    // actualizamos el objeto "appointment" en el objectStore "appointments".
     appointmentStore.put(appointment);
 
     transaction.oncomplete = function () {
@@ -139,13 +144,25 @@ function addAppointment(e) {
 
 function removeAppointment(id) {
   //eliminar cita del array
-  appointmentManager.removeAppointment(id);
+  //appointmentManager.removeAppointment(id);
 
-  //mostrar alerta
-  UserInterface.showAlert("La cita se eliminó correctamente", "success");
+  // Abrir una transacción de lectura/escritura en la base de datos "appointments"
+  const transaction = DB.transaction("appointments", "readwrite");
+  const appointmentStore = transaction.objectStore("appointments");
 
-  //actualizar citas en HTML
-  UserInterface.ShowAppointmentsInHTML();
+  appointmentStore.delete(id);
+
+  transaction.oncomplete = function () {
+    //mostrar alerta
+    UserInterface.showAlert("La cita se eliminó correctamente", "success");
+
+    //actualizar citas en HTML
+    UserInterface.ShowAppointmentsInHTML();
+  };
+
+  transaction.onerror = function () {
+    console.log("Error al eliminar cita");
+  };
 }
 
 function editAppointment(id) {
